@@ -1,0 +1,21 @@
+{
+  "name": "course-express",
+  "version": "1.0.0",
+  "description": "Backend-Breednder",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "backend"
+  ],
+  "author": "lukman_ganteng",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-group-routes": "^1.1.0",
+    "mysql": "^2.18.1"
+  }
+}
