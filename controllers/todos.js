@@ -1,46 +1,46 @@
-const connection = require('../db')
+const Todo = require('../models').todo
 
+//Get All Data
 exports.index = (req, res) => {
-    connection.query("SELECT * FROM todos", (err, rows) =>{
-        if (err) throw err
-
-        res.send(rows)
-    })
+    Todo.findAll().then(todos=>res.send(todos))
 }
 
+//Find One Data
 exports.show = (req, res) => {
-    connection.query(`SELECT * FROM todos WHERE id=${req.params.id}`, (err, rows) => {
-        if (err) throw err
+    Todo.findOne({where: {id: req.params.id}}).then(todo=>res.send(todo))
+}
 
-        res.send(rows[0])
+exports.store = (req, res) => {
+    Todo.create({...req.body, created_by:req.user.userId}).then(todo=> {
+        res.send({
+            message: "success",
+            todo
+        })
     })
 }
 
-exports.insert =  (req, res) => {
-    const { title, isDone } =  req.body   
-    
-    connection.query(`INSERT INTO todos (title, isDone) VALUES('${title}', '${isDone}')`, (err) => {
-        if (err) throw err
+//Update Data
+exports.update = (req, res) => {
+    Todo.update(
+        req.body,
+        {where: {id: req.params.id}
     })
-    res.send({
-        success: true,
-        data: req.body
+    .then(todo => {
+        res.send({
+            message: "Success",
+            todo
+        })
     })
 }
 
-exports.update =  (req, res) => {
-    const id = req.params.id
-    const index = id - 1
-    const data = req.body
-    todos[index] = {...todos[index], ...data}
-    res.send(todos[index])
-}
-
+//Delete data
 exports.destroy = (req, res) => {
-    const id = req.params.id
-    const index = id - 1
-    todos.splice(index, 1)
-    res.send({"status": "Success","data":todos})
+    Todo.destroy({where: {id: req.params.id}
+    })
+    .then(todo => {
+        res.send({
+            message: "Success",
+            todo
+        })
+    })
 }
-
-
